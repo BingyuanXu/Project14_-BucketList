@@ -21,20 +21,32 @@ struct User: Identifiable, Comparable {
 struct ContentView: View {
   
   func getDocumentsDirectory() -> URL { //you always need this to access document
-      // find all possible documents directories for this user
-      let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-
-      // just send back the first one, which ought to be the only one
-      return paths[0]
+    // find all possible documents directories for this user
+    let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+    
+    // just send back the first one, which ought to be the only one
+    return paths[0]
   }
   
-    var body: some View {
-        Text("Hello, World!")
+  var body: some View {
+    Text("Hello, World!")
+      .onTapGesture {
+        let str = "Text Message"
+        let url = self.getDocumentsDirectory().appendingPathComponent("message.tet")
+        
+        do {
+          try str.write(to: url, atomically: true, encoding: .utf8) //存
+          let input = try String(contentsOf: url) //取
+          print(input)
+        } catch {
+          print(error.localizedDescription)
+        }
     }
+  }
 }
 
 struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
-    }
+  static var previews: some View {
+    ContentView()
+  }
 }
