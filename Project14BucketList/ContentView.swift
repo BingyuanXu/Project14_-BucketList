@@ -8,6 +8,25 @@
 
 import SwiftUI
 
+
+struct LoadingView: View {
+  var body: some View {
+    Text("Loading......")
+  }
+}
+
+struct SuccessView: View {
+  var body: some View {
+    Text("Loading......")
+  }
+}
+
+struct FailedView: View {
+  var body: some View {
+    Text("Loading......")
+  }
+}
+
 struct User: Identifiable, Comparable {
   let id = UUID()
   let firstName:String
@@ -19,6 +38,12 @@ struct User: Identifiable, Comparable {
 }
 
 struct ContentView: View {
+  enum LoadingState {
+    case loading, success, failed
+  }
+  
+  var loadingState = LoadingState.loading
+  
   
   func getDocumentsDirectory() -> URL { //you always need this to access document
     // find all possible documents directories for this user
@@ -29,18 +54,14 @@ struct ContentView: View {
   }
   
   var body: some View {
-    Text("Hello, World!")
-      .onTapGesture {
-        let str = "Text Message"
-        let url = self.getDocumentsDirectory().appendingPathComponent("message.tet")
-        
-        do {
-          try str.write(to: url, atomically: true, encoding: .utf8) //存
-          let input = try String(contentsOf: url) //取
-          print(input)
-        } catch {
-          print(error.localizedDescription)
-        }
+    Group {
+      if loadingState == .loading {
+        LoadingView()
+      } else if loadingState == .success {
+        SuccessView()
+      } else if loadingState == .failed {
+        FailedView()
+      }
     }
   }
 }
