@@ -19,6 +19,15 @@ struct User: Identifiable, Comparable {
 }
 
 struct ContentView: View {
+  
+  func getDocumentsDirectory() -> URL { //you always need this to access document
+      // find all possible documents directories for this user
+      let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+
+      // just send back the first one, which ought to be the only one
+      return paths[0]
+  }
+  
     var body: some View {
         Text("Hello, World!")
     }
