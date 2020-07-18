@@ -23,7 +23,7 @@ struct ContentView: View {
       Circle()
         .fill(Color.blue)
         .opacity(0.3)
-        .frame(width: 32, height: 32)
+        .frame(width: 20, height: 20)
       
       VStack {
         Spacer()
@@ -32,6 +32,7 @@ struct ContentView: View {
           Button(action: {
             let newLocation = MKPointAnnotation()
             newLocation.coordinate = self.centerCoordinate
+            newLocation.title = "Example location"
             self.locations.append(newLocation)
           }) {
             Image(systemName: "plus")
