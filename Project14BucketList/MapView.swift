@@ -11,6 +11,8 @@ import MapKit
 
 struct MapView: UIViewRepresentable {
   @Binding var centerCoordinate: CLLocationCoordinate2D
+  @Binding var selectedPlace: MKPointAnnotation?
+  @Binding var showingPlaceDetails: Bool
   var annotations: [MKPointAnnotation]
   
   func makeCoordinator() -> Coordinator {
@@ -20,6 +22,13 @@ struct MapView: UIViewRepresentable {
   class Coordinator: NSObject, MKMapViewDelegate {
     
     var parent: MapView
+    
+    func mapView(_ mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        guard let placemark = view.annotation as? MKPointAnnotation else { return }
+
+        parent.selectedPlace = placemark
+        parent.showingPlaceDetails = true
+    }
     
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
       // this is our unique identifier for view reuse
@@ -86,6 +95,6 @@ extension MKPointAnnotation {   //for previews
 
 struct MapView_Previews: PreviewProvider {
   static var previews: some View {
-    MapView(centerCoordinate: .constant(MKPointAnnotation.example.coordinate),annotations: [MKPointAnnotation.example])
+ MapView(centerCoordinate: .constant(MKPointAnnotation.example.coordinate), selectedPlace: .constant(MKPointAnnotation.example), showingPlaceDetails: .constant(false), annotations: [MKPointAnnotation.example])
   }
 }
